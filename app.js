@@ -10,10 +10,14 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.CLIENT_URL || "*",
+  credentials: true
+}));
 app.use(express.json());
 app.use("/jobs", jobRoutes);
 
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 // Create a centralized axios instance
 // Using /jobs to leverage the Vite proxy (config in vite.config.js)
 const api = axios.create({
-  baseURL: '/jobs',
+  baseURL: import.meta.env.VITE_API_URL || '/jobs',
   timeout: 10000, // 10s timeout
   headers: {
     'Content-Type': 'application/json',
