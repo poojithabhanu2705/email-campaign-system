@@ -1,25 +1,19 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: false,
-  requireTLS: true,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-transporter.verify((err, success) => {
-  if (err) {
-    console.error('SMTP Error:', err);
-  } else {
-    console.log('SMTP Ready');
-  }
-});
+async function sendEmail({ to, subject, text, html, from }) {
+  const sender = from || process.env.RESEND_FROM || process.env.EMAIL_USER || 'no-reply@resend.dev';
+  return await resend.emails.send({
+    from: sender,
+    to,
+    subject,
+    text,
+    html,
+  });
+}
 
-export default transporter;
+export default sendEmail;

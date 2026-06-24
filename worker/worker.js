@@ -1,6 +1,6 @@
 import { Worker } from "bullmq";
 import IORedis from "ioredis";
-import transporter from "../utils/mailer.js";
+import sendEmail from "../utils/mailer.js";
 import Job from "../models/Job.js";
 import Campaign from "../models/Campaign.js";
 import connectDB from "../config/db.js";
@@ -47,13 +47,18 @@ if (!global.__bullmqWorkerStarted) {
         throw new Error("Campaign not found");
       }
 
-      await transporter.sendMail({
-        from: process.env.EMAIL_USER,
-        to: recipientEmail,
-        subject: campaign.subject,
-        text: campaign.content,
-        html: campaign.content,
-      });
+      try {
+        await sendEmail({
+          to: recipientEmail,
+          subject: campaign.subject,
+          html: campaign.content,
+          text: campaign.content,
+        });
+        console.log("Email sent successfully");
+      } catch (error) {
+        console.error("Email failed:", error);
+        throw error;
+      }
 
       await Job.findOneAndUpdate(
         { jobId: job.id },
