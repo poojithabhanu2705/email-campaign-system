@@ -36,7 +36,7 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen, setIsOpen }) 
             <div className="w-7 h-7 bg-blue-500 text-white rounded flex items-center justify-center shadow-lg shadow-blue-500/20">
               <Zap size={16} fill="white" />
             </div>
-            <span className="font-bold text-zinc-100 tracking-tight">MailPulse</span>
+            <span className="font-bold text-zinc-100 tracking-tight">Holden</span>
           </div>
           <button 
             onClick={() => setIsOpen(false)}

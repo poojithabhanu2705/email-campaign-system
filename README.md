@@ -1,4 +1,4 @@
-# Scalable Job Queue System
+# Holden - Scalable Job Queue System
 
 A scalable backend job processing system built using Node.js, Express, BullMQ, Redis, and MongoDB.
 
