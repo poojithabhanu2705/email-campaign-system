@@ -11,8 +11,20 @@ connectDB();
 const app = express();
 
 app.use(cors({
-  origin: process.env.CLIENT_URL || "*",
-  credentials: true
+  origin(origin, callback) {
+    if (!origin) return callback(null, true);
+
+    if (
+      origin.includes("vercel.app") ||
+      origin === process.env.CLIENT_URL ||
+      origin === "http://localhost:5173"
+    ) {
+      return callback(null, true);
+    }
+
+    callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
 }));
 app.use(express.json());
 app.use("/jobs", jobRoutes);
