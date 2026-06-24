@@ -50,26 +50,20 @@ if (!global.__bullmqWorkerStarted) {
       console.log("Sending email...");
       console.log("Recipient:", recipientEmail);
       console.log("Subject:", campaign.subject);
-      console.log("Sending email from: onboarding@resend.dev");
 
       let response;
       try {
-        response = await sendEmail({
-          to: recipientEmail,
-          subject: campaign.subject,
-          html: campaign.content,
-          text: campaign.content,
-        });
+        response = await sendEmail(recipientEmail, campaign.subject, campaign.content);
       } catch (error) {
         console.error("EMAIL FAILURE:", error);
         throw error;
       }
 
-      console.log("RESEND RESPONSE:", JSON.stringify(response, null, 2));
+      console.log("SMTP sendMail response:", JSON.stringify(response, null, 2));
 
-      if (!response?.data?.id) {
-        console.error("EMAIL FAILURE: missing response id", response);
-        throw new Error("Resend did not return a message id.");
+      if (!response?.messageId) {
+        console.error("EMAIL FAILURE: missing messageId", response);
+        throw new Error("SMTP did not return a messageId.");
       }
 
       console.log("Email sent successfully");

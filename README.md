@@ -201,11 +201,23 @@ npm install
 
 ## 3. Configure Environment Variables
 
-Create a `.env` file:
+Create a `.env` file with Gmail SMTP settings:
 
 ```env
 MONGO_URI=your_mongodb_connection_string
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-gmail-address@gmail.com
+SMTP_PASS=your-gmail-app-password
+FROM_EMAIL=your-gmail-address@gmail.com
 ```
+
+### Gmail App Password
+
+1. Enable 2-Step Verification on your Google account.
+2. Go to Google Account > Security > App passwords.
+3. Create an app password for Mail and copy it.
+4. Use the generated password as `SMTP_PASS`.
 
 ---
 
