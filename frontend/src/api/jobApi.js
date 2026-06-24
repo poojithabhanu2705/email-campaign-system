@@ -2,12 +2,12 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
 // Create a centralized axios instance
-// Ensure production `VITE_API_URL` uses the `/jobs` prefix so requests
-// target the same Express routes mounted under `/jobs`.
+// Use `/jobs` prefix for both development proxy and production API URL.
 const resolvedApiBase = (() => {
-  const envUrl = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace(/\/$/, '') : '';
-  if (!envUrl) return '/jobs';
-  return envUrl.endsWith('/jobs') ? envUrl : envUrl + '/jobs';
+  if (import.meta.env.VITE_API_URL) {
+    return `${import.meta.env.VITE_API_URL.replace(/\/$/, '')}/jobs`;
+  }
+  return '/jobs';
 })();
 
 const api = axios.create({
