@@ -47,18 +47,32 @@ if (!global.__bullmqWorkerStarted) {
         throw new Error("Campaign not found");
       }
 
+      console.log("Sending email...");
+      console.log("Recipient:", recipientEmail);
+      console.log("Subject:", campaign.subject);
+      console.log("Sending email from: onboarding@resend.dev");
+
+      let response;
       try {
-        await sendEmail({
+        response = await sendEmail({
           to: recipientEmail,
           subject: campaign.subject,
           html: campaign.content,
           text: campaign.content,
         });
-        console.log("Email sent successfully");
       } catch (error) {
-        console.error("Email failed:", error);
+        console.error("EMAIL FAILURE:", error);
         throw error;
       }
+
+      console.log("RESEND RESPONSE:", JSON.stringify(response, null, 2));
+
+      if (!response?.data?.id) {
+        console.error("EMAIL FAILURE: missing response id", response);
+        throw new Error("Resend did not return a message id.");
+      }
+
+      console.log("Email sent successfully");
 
       await Job.findOneAndUpdate(
         { jobId: job.id },
